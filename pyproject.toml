@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "ttoe-web"
+version = "0.1.0"
+description = "tictactoe_keras_web"
+authors = ["Dennis Xiloj <denjohx@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ttoe_web"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+Django = "^4.1.1"
+django-restframework = "^0.0.1"
+mysqlclient = "^2.1.1"
+numpy = "^1.23.3"
+tensorflow = "^2.10.0"
+Markdown = "^3.4.1"
+django-filter = "^22.1"
+djangorestframework = "^3.13.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
