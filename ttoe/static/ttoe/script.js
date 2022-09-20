@@ -588,14 +588,15 @@ function showOptions() {
         document.getElementById("rx").checked = true;
         document.getElementById("ro").checked = false;
     }
-    if (difficulty === 0) {
-        document.getElementById("r0").checked = true;
-        document.getElementById("r1").checked = false;
-    }
-    else {
-        document.getElementById("r0").checked = false;
-        document.getElementById("r1").checked = true;
-    }
+    difficulty = 1;
+    // if (difficulty === 0) {
+    //     document.getElementById("r0").checked = true;
+    //     document.getElementById("r1").checked = false;
+    // }
+    // else {
+    //     document.getElementById("r0").checked = false;
+    //     document.getElementById("r1").checked = true;
+    // }
     document.getElementById("optionsDlg").style.display = "block";
 }
 
@@ -632,9 +633,9 @@ function closeModal(id) {
 
 function endGame(who) {
     if (who == player) {
-        announceWinner("Congratulations, you won!");
+        announceWinner("Congratulations, you won!... Really!?");
     } else if (who == computer) {
-        announceWinner("Computer wins!");
+        announceWinner("AlphaZero wins!");
     } else {
         announceWinner("It's a tie!");
     }
