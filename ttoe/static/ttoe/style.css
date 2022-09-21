@@ -66,13 +66,15 @@ table {
     text-decoration: underline;
 }
 #restart {
-    font-size: 3em;
-    width: 1em;
+    font-size: 1.5em;
     height: 0.9em;
     cursor: pointer;
     margin: 0 auto;
-    overflow: hidden;
 }
+#status_text {
+    color: transparent;
+}
+
 .x {
     color: darksalmon;
     position: relative;

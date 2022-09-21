@@ -510,9 +510,13 @@ function makeComputerMove() {
     var grid = convertGrid();
 
     // then we need to send the grid to the server and get the response
+    document.getElementById("status_text").style.color = "white";
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         console.log('readyState: ' + this.readyState + ", status: " + this.status);
+        if (this.readyState == 4) {
+            document.getElementById("status_text").style.color = "transparent";
+        }
         if (this.readyState == 4 && this.status == 201) {
             // the response is a json object with the following structure:
             // {"move": 0, "grid": "X--------"}
@@ -633,7 +637,7 @@ function _checkWin() {
     if (myArr.length === 0) {
         winner = 10;
         score.ties++;
-        setTimeout(endGame, 1000, winner);
+        setTimeout(endGame, 100, winner);
         return winner;
     }
 
