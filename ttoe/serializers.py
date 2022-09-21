@@ -1,4 +1,3 @@
-from turtle import st
 from rest_framework import serializers
 import numpy as np
 from ttoe.ai import play
