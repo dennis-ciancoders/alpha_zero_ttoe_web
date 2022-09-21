@@ -467,12 +467,12 @@ function makeComputerMoveBkp() {
     document.getElementById(id).style.cursor = "default";
     // randomize rotation of marks on the board to make them look
     // as if they were handwritten
-    var rand = Math.random();
-    if (rand < 0.3) {
-        document.getElementById(id).style.transform = "rotate(45deg)";
-    } else if (rand > 0.6) {
-        document.getElementById(id).style.transform = "rotate(90deg)";
-    }
+    // var rand = Math.random();
+    // if (rand < 0.3) {
+    //     document.getElementById(id).style.transform = "rotate(45deg)";
+    // } else if (rand > 0.6) {
+    //     document.getElementById(id).style.transform = "rotate(90deg)";
+    // }
     myGrid.cells[cell] = computer;
     moves += 1;
     if (moves >= 5) {
@@ -527,10 +527,10 @@ function makeComputerMove() {
             // randomize rotation of marks on the board to make them look
             // as if they were handwritten
             var rand = Math.random();
-            if (rand < 0.3) {
-                document.getElementById(id).style.transform = "rotate(45deg)";
-            } else if (rand > 0.6) {
-                document.getElementById(id).style.transform = "rotate(15deg)";
+            // if (rand < 0.3) {
+            //     document.getElementById(id).style.transform = "rotate(5deg)";
+            // } else if (rand > 0.6) {
+            //     document.getElementById(id).style.transform = "rotate(10deg)";
             }
             myGrid.cells[cell] = computer;
             moves += 1;
