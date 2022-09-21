@@ -483,6 +483,20 @@ function makeComputerMoveBkp() {
     }
 }
 
+function convertGrid(){
+    var grid = "";
+    for (var i = 0; i < myGrid.cells.length; i++) {
+        if (myGrid.cells[i] == 0) {
+            grid += "-";
+        } else if (myGrid.cells[i] == computer) {
+            grid += "X";
+        } else if (myGrid.cells[i] == player) {
+            grid += "O";
+        }
+    }
+    return grid;
+}
+
 // AI implementation with api calls to the server
 function makeComputerMove() {
     if (gameOver) {
@@ -490,16 +504,10 @@ function makeComputerMove() {
     }
 
     // first we need to convert the grid from an array in the form of [0,3,1,0,0,0,0,0,0] to a string in the form of "-O-X------"
-    var grid = "";
-    for (var i = 0; i < myGrid.cells.length; i++) {
-        if (myGrid.cells[i] == 0) {
-            grid += "-";
-        } else if (myGrid.cells[i] == 1) {
-            grid += "X";
-        } else if (myGrid.cells[i] == 3) {
-            grid += "O";
-        }
-    }
+    console.log("player", player);
+    console.log("computer", computer);
+
+    var grid = convertGrid();
 
     // then we need to send the grid to the server and get the response
     var xhttp = new XMLHttpRequest();
@@ -527,7 +535,7 @@ function makeComputerMove() {
             myGrid.cells[cell] = computer;
             moves += 1;
             if (moves >= 5) {
-                winner = checkWin();
+                winner = checkWin(true);
             }
             if (winner === 0 && !gameOver) {
                 whoseTurn = player;
@@ -545,7 +553,7 @@ function makeComputerMove() {
 
 
 // Check if the game is over and determine winner
-function checkWin() {
+function _checkWin() {
     winner = 0;
 
     // rows
@@ -625,10 +633,30 @@ function checkWin() {
     if (myArr.length === 0) {
         winner = 10;
         score.ties++;
-        endGame(winner);
+        setTimeout(endGame, 1000, winner);
         return winner;
     }
 
+    return winner;
+}
+
+function checkWin(fromComputer){
+    var winner = _checkWin();
+    console.log('checkWin', winner);
+    if (winner !== 0) {
+        console.log('WINNER!!!');
+    }
+    if ((winner !== 0) && (fromComputer !== true)) {
+        console.log('sending to the server');
+        // as we need the backend to acknoledge the game is over, we need to send the grid to the server
+        // then we need to send the grid to the server and get the response
+        var xhttp = new XMLHttpRequest();
+        // make the POST to /api/move with the grid as a json object {board: grid}
+        var grid = convertGrid();
+        xhttp.open("POST", "/api/move", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify({board: grid}));
+    }
     return winner;
 }
 
