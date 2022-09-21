@@ -375,7 +375,7 @@ function restartGame(ask) {
 }
 
 // The core logic of the game AI:
-function makeComputerMove() {
+function makeComputerMoveBkp() {
     // debugger;
     if (gameOver) {
         return false;
@@ -459,14 +459,17 @@ function makeComputerMove() {
         }
     }
     var id = "cell" + cell.toString();
-    // console.log("computer chooses " + id);
+
+    console.log("computer chooses " + id);
+    console.log("grid was" + myGrid.cells);
+
     document.getElementById(id).innerHTML = computerText;
     document.getElementById(id).style.cursor = "default";
     // randomize rotation of marks on the board to make them look
     // as if they were handwritten
     var rand = Math.random();
     if (rand < 0.3) {
-        document.getElementById(id).style.transform = "rotate(180deg)";
+        document.getElementById(id).style.transform = "rotate(45deg)";
     } else if (rand > 0.6) {
         document.getElementById(id).style.transform = "rotate(90deg)";
     }
@@ -479,6 +482,67 @@ function makeComputerMove() {
         whoseTurn = player;
     }
 }
+
+// AI implementation with api calls to the server
+function makeComputerMove() {
+    if (gameOver) {
+        return false;
+    }
+
+    // first we need to convert the grid from an array in the form of [0,3,1,0,0,0,0,0,0] to a string in the form of "-O-X------"
+    var grid = "";
+    for (var i = 0; i < myGrid.cells.length; i++) {
+        if (myGrid.cells[i] == 0) {
+            grid += "-";
+        } else if (myGrid.cells[i] == 1) {
+            grid += "X";
+        } else if (myGrid.cells[i] == 3) {
+            grid += "O";
+        }
+    }
+
+    // then we need to send the grid to the server and get the response
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        console.log('readyState: ' + this.readyState + ", status: " + this.status);
+        if (this.readyState == 4 && this.status == 201) {
+            // the response is a json object with the following structure:
+            // {"move": 0, "grid": "X--------"}
+            // where move is the index of the cell to play and grid is the grid after the move
+            var response = JSON.parse(this.responseText);
+            var cell = response.move;
+            var id = "cell" + cell;
+            console.log("computer chooses " + id);
+            console.log("grid was" + myGrid.cells);
+            document.getElementById(id).innerHTML = computerText;
+            document.getElementById(id).style.cursor = "default";
+            // randomize rotation of marks on the board to make them look
+            // as if they were handwritten
+            var rand = Math.random();
+            if (rand < 0.3) {
+                document.getElementById(id).style.transform = "rotate(45deg)";
+            } else if (rand > 0.6) {
+                document.getElementById(id).style.transform = "rotate(15deg)";
+            }
+            myGrid.cells[cell] = computer;
+            moves += 1;
+            if (moves >= 5) {
+                winner = checkWin();
+            }
+            if (winner === 0 && !gameOver) {
+                whoseTurn = player;
+            }
+        }
+    }
+
+    // make the POST to /api/move with the grid as a json object {board: grid}
+    xhttp.open("POST", "/api/move", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify({board: grid}));
+
+}
+
+
 
 // Check if the game is over and determine winner
 function checkWin() {
