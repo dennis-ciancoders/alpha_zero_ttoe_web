@@ -58,6 +58,12 @@ class TMoveSerializer(serializers.Serializer):
             # save the game
             Game.objects.create(board=new_board, winner=winner)
 
+        text = '1110'
+
+        # validate text with regex exactly from 1110 to 8970
+        
+
+
 
         validated_data['winner'] = winner
         validated_data['ended'] = status != 0
